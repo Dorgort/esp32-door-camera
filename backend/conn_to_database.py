@@ -2,25 +2,33 @@ import paho.mqtt.client as mqtt
 import psycopg2
 from psycopg2 import sql
 import time
+from os import getenv
 
 
 db_params = {
-    'host': 'localhost',
-    'port': 5432,
-    'database': 'camera_database',
-    'user': 'user',
-    'password': 'aetjauhwtwgbjreherh'
+    'host': getenv("DB_IP"),
+    'port': int(getenv("DB_PORT")),
+    'database': getenv("DB_NAME"),
+    'user': getenv("DB_USER"),
+    'password': getenv("DB_PASSWORD")
 }
 sql = """INSERT INTO test (message) VALUES(%s) RETURNING id;"""
 result = ""
 
 def mqtt_connect():
-    broker_address="localhost"
-    client = mqtt.Client() #create new instance
-    client.username_pw_set("user", "123")
-    print("Connecting...")
-    client.connect(host=broker_address, port=1883,) #connect to broker
-    client.subscribe("hello/world")
+    broker_address=getenv("MQTT_IP")
+    broker_port=int(getenv("MQTT_PORT"))
+    mqtt_user=getenv("MQTT_USER")
+    mqtt_password=getenv("MQTT_PASSWORD")
+
+    print("creating new instance")
+    client = mqtt.Client(client_id="test_listener", transport="websockets") #create new instance
+    client.username_pw_set(mqtt_user, mqtt_password)
+    print("connecting to broker")
+    client.connect(host=broker_address, port=broker_port,) #connect to broker
+    client.subscribe("/hello/world")
+    
+    
     return client
 
 def mqtt_check(client):

@@ -1,13 +1,20 @@
 import paho.mqtt.client as mqtt
+from os import getenv
 
-broker_address="localhost"
+
+broker_address=getenv("MQTT_IP")
+broker_port=int(getenv("MQTT_PORT"))
+mqtt_user=getenv("MQTT_USER")
+mqtt_password=getenv("MQTT_PASSWORD")
+
+
 print("creating new instance")
-client = mqtt.Client() #create new instance
-client.username_pw_set("user", "123")
+client = mqtt.Client(client_id="test_listener", transport="websockets") #create new instance
+client.username_pw_set(mqtt_user, mqtt_password)
 print("connecting to broker")
-client.connect(host=broker_address, port=1883,) #connect to broker
-print("Subscribing to topic","hello/world")
-client.subscribe("hello/world")
+client.connect(host=broker_address, port=broker_port,) #connect to broker
+print("Subscribed: /hello/world")
+client.subscribe("/hello/world")
 
 def on_message(client, userdata, message):
     print("message received " ,str(message.payload.decode("utf-8")))

@@ -1,12 +1,13 @@
 import psycopg2
 from psycopg2 import sql
+from os import getenv
 
 db_params = {
-    'host': 'localhost',
-    'port': 5432,
-    'database': 'camera_database',
-    'user': 'user',
-    'password': 'aetjauhwtwgbjreherh'
+    'host': getenv("DB_IP"),
+    'port': int(getenv("DB_PORT")),
+    'database': getenv("DB_NAME"),
+    'user': getenv("DB_USER"),
+    'password': getenv("DB_PASSWORD")
 }
 
 message = "hello world"

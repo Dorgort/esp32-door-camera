@@ -1,13 +1,19 @@
 import paho.mqtt.client as mqtt
+from os import getenv
 
-broker_address="localhost"
-print("creating new instance")
-client = mqtt.Client() #create new instance
-client.username_pw_set("user", "123")
+broker_address=getenv("MQTT_IP")
+broker_port=int(getenv("MQTT_PORT"))
+mqtt_user=getenv("MQTT_USER")
+mqtt_password=getenv("MQTT_PASSWORD")
+
+
+client = mqtt.Client(client_id="test_publisher", transport="websockets") #create new instance
+client.username_pw_set(mqtt_user, mqtt_password)
 print("connecting to broker")
-client.connect(host=broker_address, port=1883,) #connect to broker
-
+client.connect(host=broker_address, port=broker_port,) #connect to broker
+print("Trying to send message")
 message = "Hello World!"
-client.publish("hello/world", message)
+client.publish("/hello/world", message)
+print("Sent message:", message)
 
 client.disconnect()
