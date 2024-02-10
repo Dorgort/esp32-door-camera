@@ -12,7 +12,7 @@ db_params = {
     'user': getenv("DB_USER"),
     'password': getenv("DB_PASSWORD")
 }
-sql = """INSERT INTO test (message) VALUES(%s) RETURNING id;"""
+sql = """INSERT INTO images (image_data) VALUES(%s) RETURNING id;"""
 result = ""
 
 def mqtt_connect():
@@ -22,11 +22,11 @@ def mqtt_connect():
     mqtt_password=getenv("MQTT_PASSWORD")
 
     print("creating new instance")
-    client = mqtt.Client(client_id="test_listener", transport="websockets") #create new instance
+    client = mqtt.Client(client_id="db_saver", transport="websockets") #create new instance
     client.username_pw_set(mqtt_user, mqtt_password)
     print("connecting to broker")
     client.connect(host=broker_address, port=broker_port,) #connect to broker
-    client.subscribe("/hello/world")
+    client.subscribe("image/db")
     
     
     return client
@@ -40,8 +40,6 @@ def mqtt_check(client):
 def on_message(client, userdata, message):
     print("message received " ,str(message.payload.decode("utf-8")))
     print("message topic=",message.topic)
-    print("message qos=",message.qos)
-    print("message retain flag=",message.retain)
     global result 
     result = str(message.payload.decode("utf-8"))
     print (result)

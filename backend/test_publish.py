@@ -13,7 +13,7 @@ print("connecting to broker")
 client.connect(host=broker_address, port=broker_port,) #connect to broker
 print("Trying to send message")
 message = "Hello World!"
-client.publish("/hello/world", message)
+client.publish("hello/world", message)
 print("Sent message:", message)
 
 client.disconnect()

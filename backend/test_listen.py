@@ -13,8 +13,8 @@ client = mqtt.Client(client_id="test_listener", transport="websockets") #create 
 client.username_pw_set(mqtt_user, mqtt_password)
 print("connecting to broker")
 client.connect(host=broker_address, port=broker_port,) #connect to broker
-print("Subscribed: /hello/world")
-client.subscribe("/hello/world")
+print("Subscribed: hello/world")
+client.subscribe("hello/world")
 
 def on_message(client, userdata, message):
     print("message received " ,str(message.payload.decode("utf-8")))
