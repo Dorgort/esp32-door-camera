@@ -1,8 +1,9 @@
-const topic = "/camera";
+const topic = config.MQTT_TOPIC;
 const broker = config.MQTT_IP;
+let client;
+let payload;
 
 window.addEventListener("load", (event) => {
-  let img = document.getElementById("image");
   let msg = document.getElementById("msg");
   let frameCounter = 0;
   const options = {
@@ -12,7 +13,7 @@ window.addEventListener("load", (event) => {
     username: config.MQTT_USER,
     password: config.MQTT_PASSWORD,
   };
-  const client = mqtt.connect("mqtt://" + broker, options);
+  client = mqtt.connect("mqtt://" + broker, options);
 
   client.on("connect", function () {
     msg.textContent = "Connected; Waiting for images...";
@@ -20,9 +21,9 @@ window.addEventListener("load", (event) => {
   });
 
   client.on("message", (topic, message) => {
-    var topic = topic;
-    var payload = message;
-  
+    //var topic = topic;
+    payload = message;
+
     if (payload != undefined && payload.length > 0) {
       $("img").attr("src", payload);
     }
@@ -33,3 +34,37 @@ window.addEventListener("load", (event) => {
     msg.textContent = `Frames: ${frameCounter}`;
   });
 });
+
+
+
+function send_to_database() {
+  if (payload != undefined && payload.length > 0) {
+    //console.log(client.connected);
+    //console.log(client)
+    let img = payload;
+    // message = new Paho.MQTT.Message("Hello");
+    // message.destinationName = "World";
+    // client.send(message);
+    client.publish
+      ('image/db', img);
+  }
+}
+
+function send_to_phone() {
+  if (payload != undefined && payload.length > 0) {
+    let img = payload;
+    client.publish('image/phone', img);
+  }
+}
+
+function detect_face(face) {
+  if (payload != undefined && payload.length > 0) {
+    console.log(face=="max_mustermann")
+    if (face == "max_mustermann") {
+      client.publish('face', "true");
+    }
+    else {
+      client.publish('face', "false");
+    }
+  }
+}
