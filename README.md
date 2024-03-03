@@ -17,3 +17,5 @@ PostgreSQL
 https://www.amazon.de/AZDelivery-HC-SR501-Bewegungssensor-Bewegungsmelde-Arduino/dp/B07CNBYRQ7/ref=sr_1_3?th=1
 
 https://www.amazon.de/XTVTX-ESP32-CAM-ESP32-CAM-MB-Kameramodul-kompatibel/dp/B093GSCBWJ/ref=sr_1_2
+
+https://openest.io/en/services/mqtts-how-to-use-mqtt-with-tls/
