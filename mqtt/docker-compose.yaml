@@ -9,10 +9,12 @@ services:
       - "53165:53165"
     volumes:
       - ./config:/mosquitto/config:rw
+      - ./log:/mosquitto/log:rw
 
 # volumes for mapping data,config and log
 volumes:
   config:
+  log:
 
 networks:
   default:
