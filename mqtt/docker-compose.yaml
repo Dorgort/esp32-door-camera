@@ -6,18 +6,13 @@ services:
     container_name: mqtt5
     network_mode: host
     ports:
-      - "1883:1883" #default mqtt port
-      - "9001:9001" #default mqtt port for websockets
+      - "53165:53165"
     volumes:
       - ./config:/mosquitto/config:rw
-      - ./data:/mosquitto/data:rw
-      - ./log:/mosquitto/log:rw
 
 # volumes for mapping data,config and log
 volumes:
   config:
-  data:
-  log:
 
 networks:
   default:
