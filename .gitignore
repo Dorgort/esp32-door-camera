@@ -1,4 +1,5 @@
 .env
 config.js
+secrets.h
 /esp/
 /backend/certs/
