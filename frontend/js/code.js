@@ -9,11 +9,11 @@ window.addEventListener("load", (event) => {
   const options = {
     clean: true,
     connectTimeout: 4000,
-    port: config.MQTT_PORT, // Secure websocket port
+    port: config.MQTT_PORT,
     username: config.MQTT_USER,
     password: config.MQTT_PASSWORD,
   };
-  client = mqtt.connect("mqtt://" + broker, options);
+  client = mqtt.connect("ws://" + broker, options);
 
   client.on("connect", function () {
     msg.textContent = "Connected; Waiting for images...";

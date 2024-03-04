@@ -8,6 +8,8 @@ https://github.com/sukesh-ak/setup-mosquitto-with-docker
 
 http://www.steves-internet-guide.com/into-mqtt-python-client/
 
+https://github.com/AliBigdeli/RealTime-MQTT-Camera/tree/main
+
 
 #DATABASE
 PostgreSQL
@@ -18,4 +20,8 @@ https://www.amazon.de/AZDelivery-HC-SR501-Bewegungssensor-Bewegungsmelde-Arduino
 
 https://www.amazon.de/XTVTX-ESP32-CAM-ESP32-CAM-MB-Kameramodul-kompatibel/dp/B093GSCBWJ/ref=sr_1_2
 
+
+#TLS
 https://openest.io/en/services/mqtts-how-to-use-mqtt-with-tls/
+
+https://github.com/espressif/arduino-esp32/blob/master/libraries/WiFiClientSecure/examples/WiFiClientSecure/WiFiClientSecure.ino

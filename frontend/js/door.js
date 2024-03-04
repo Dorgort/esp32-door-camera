@@ -10,11 +10,11 @@ window.addEventListener("load", (event) => {
     const options = {
         clean: true,
         connectTimeout: 4000,
-        port: config.MQTT_PORT, // Secure websocket port
+        port: config.MQTT_PORT,
         username: config.MQTT_USER,
         password: config.MQTT_PASSWORD,
     };
-    const client = mqtt.connect("mqtt://" + broker, options);
+    const client = mqtt.connect("ws://" + broker, options);
 
     client.on("connect", function () {
         icon.setAttribute('class', 'fa-solid fa-door-closed');
