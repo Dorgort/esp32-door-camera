@@ -20,8 +20,12 @@ try:
     # Open a cursor to perform database operations
     cur = conn.cursor()
 
-    cur.execute(sql, (message,))
-    print(cur.fetchone()[0])
+    #cur.execute(sql, (message,))
+    #print(cur.fetchone()[0])
+    cur.execute("SELECT * FROM images")
+    print(cur.fetchall())
+    cur.execute("SELECT * FROM logs")
+    print(cur.fetchall())
 
     # Make the changes to the database persistent
     conn.commit()

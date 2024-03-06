@@ -14,7 +14,6 @@ window.addEventListener("load", (event) => {
     password: config.MQTT_PASSWORD,
   };
   client = mqtt.connect("ws://" + broker, options);
-
   client.on("connect", function () {
     msg.textContent = "Connected; Waiting for images...";
     client.subscribe(topic);
@@ -46,14 +45,14 @@ function send_to_database() {
     // message.destinationName = "World";
     // client.send(message);
     client.publish
-      ('image/db', img);
+      ('db/image', img);
   }
 }
 
 function send_to_phone() {
   if (payload != undefined && payload.length > 0) {
     let img = payload;
-    client.publish('image/phone', img);
+    client.publish('phone/image', img);
   }
 }
 
@@ -61,10 +60,14 @@ function detect_face(face) {
   if (payload != undefined && payload.length > 0) {
     console.log(face=="max_mustermann")
     if (face == "max_mustermann") {
-      client.publish('face', "true");
+      client.publish('face', "Max Mustermann");
+      let img = payload;
+      client.publish('phone/image', img);
     }
     else {
-      client.publish('face', "false");
+      client.publish('face', "unbekannte Person");
+      let img = payload;
+      client.publish('phone/image', img);
     }
   }
 }
