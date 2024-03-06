@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat App</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/5.0.0-beta.3/mqtt.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>  
+    <script src="config.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <!-- Person selector: this contains buttons for user to select whether to chat as User or Bot -->
+    <div class="person-selector">
+      <button class="button person-selector-button active-person" id="user-selector">User</button>
+      <button class="button person-selector-button" id="bot-selector">Bot</button>
+    </div>
+    <div class="chat-container">
+      <h2 class="chat-header" id="chat-header">OwlDoor Chat (Connecting...)</h2>
+
+      <div class="chat-messages">
+        <div class="message blue-bg">
+          <div class="message-sender">User</div>
+          <div class="message-text">/start</div>
+          <div class="message-timestamp">10:30 AM</div>
+        </div>
+        <div class="message gray-bg">
+          <div class="message-sender">Bot</div>
+          <div class="message-text">Sending activity...</div>
+          <div class="message-timestamp">10:31 AM</div>
+        </div>
+      </div>
+
+      <form class="chat-input-form">
+        <input type="text" class="chat-input" required placeholder="Type here, User..." />
+        <button type="submit" class="button send-button">Send</button>
+      </form>
+      <button class="button clear-chat-button">Clear Chat</button>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
