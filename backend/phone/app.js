@@ -53,7 +53,7 @@ userSelectorBtn.onclick = () => updateMessageSender('User')
 botSelectorBtn.onclick = () => updateMessageSender('Bot')
 
 const sendMessage = () => {
-
+  console.log(chatInput.value);
   const timestamp = new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
   const message = {
     sender: messageSender,
@@ -80,12 +80,10 @@ const sendMessage = () => {
   chatMessages.scrollTop = chatMessages.scrollHeight
 }
 
-chatInputForm.addEventListener('submit', sendMessage)
-
-clearChatBtn.addEventListener('click', () => {
-  localStorage.clear()
-  chatMessages.innerHTML = ''
-})
+function clearChat() {
+    localStorage.clear()
+    chatMessages.innerHTML = ''
+}
 
 
 window.addEventListener("load", (event) => {
@@ -107,7 +105,8 @@ window.addEventListener("load", (event) => {
       chat_header.textContent = "OwlDoor (Connected)."
       client.subscribe(topic);
       client.subscribe(topic_door);
-      client.subscribe("connection/#")
+      client.subscribe("connection/#");
+      client.subscribe("door");
   });
 
   client.on("message", (topic, message) => {
@@ -124,7 +123,12 @@ window.addEventListener("load", (event) => {
       }
       else if (topic == "face"){
         chatInput.value = `OwlDoor erspäht ${payload} vor deiner Haustür!`
-
+        updateMessageSender('Bot')
+        sendMessage(null);
+        updateMessageSender('User')
+      }
+      else if (topic == "door"){
+        chatInput.value = `Tür ist jetzt ${payload}!`
         updateMessageSender('Bot')
         sendMessage(null);
         updateMessageSender('User')
@@ -140,10 +144,10 @@ window.addEventListener("load", (event) => {
 });
 
 function doorOpen(){
-  console.log(client)
+  console.log(client);
   client.publish('door', 'offen');
-  updateMessageSender('Bot')
+  updateMessageSender('Bot');
   chatInput.value = `Tür wird versucht zu öffnen!`
   sendMessage(null);
-  updateMessageSender('User')
+  updateMessageSender('User');
 }

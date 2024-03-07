@@ -2,6 +2,7 @@ const topic = config.MQTT_DOOR_TOPIC;
 const broker = config.MQTT_IP;
 const open_door_time = 10;
 let remaining_door_open_time = open_door_time;
+let is_door_open = false;
 
 window.addEventListener("load", (event) => {
     let icon = document.getElementById("icon");
@@ -30,7 +31,8 @@ window.addEventListener("load", (event) => {
         let payload = decoder.decode(message);
         console.log(payload);
         //console.log(payload== "Max Mustermann");
-        if (payload == "offen") {
+        if (payload == "offen" && !is_door_open) {
+            is_door_open = true;
             icon.setAttribute('class', 'fa-solid fa-door-open');
             // Interval 1000ms Funktionsaufruf
             let interval = setInterval(reduce_remaining_door_open_time, 1000);
@@ -40,7 +42,7 @@ window.addEventListener("load", (event) => {
         }
         else {
             icon.setAttribute('class', 'fa-solid fa-door-closed');
-            msg.textContent = "Tür bleibt verschlossen."
+            msg.textContent = "Tür verschlossen."
         }
     });
 });
@@ -50,9 +52,13 @@ function door_close(client, interval){
     msg.textContent = "Tür verschlossen.";
     client.publish('door', 'verschlossen');
     clearInterval(interval);
+    is_door_open = false;
 }
 
 function reduce_remaining_door_open_time(){
+    if (remaining_door_open_time < 0){
+        return
+    }
     console.log(remaining_door_open_time);
     msg.textContent = `Tür für ${remaining_door_open_time} Sekunden offen`;
     remaining_door_open_time--;

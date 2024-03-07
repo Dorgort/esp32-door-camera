@@ -19,23 +19,14 @@
       <h2 class="chat-header" id="chat-header">OwlDoor Chat (Connecting...)</h2>
 
       <div class="chat-messages">
-        <div class="message blue-bg">
-          <div class="message-sender">User</div>
-          <div class="message-text">/start</div>
-          <div class="message-timestamp">10:30 AM</div>
-        </div>
-        <div class="message gray-bg">
-          <div class="message-sender">Bot</div>
-          <div class="message-text">Sending activity...</div>
-          <div class="message-timestamp">10:31 AM</div>
-        </div>
+
       </div>
 
       <form class="chat-input-form">
         <input type="text" class="chat-input" required placeholder="Type here, User..." />
-        <button type="submit" class="button send-button">Send</button>
+        <button class="button send-button" onclick="sendMessage()">Send</button>
       </form>
-      <button class="button clear-chat-button">Clear Chat</button>
+      <button class="button clear-chat-button" onclick="clearChat()">Clear Chat</button>
     </div>
 
     <script src="app.js"></script>

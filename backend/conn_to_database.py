@@ -38,7 +38,6 @@ def mqtt_connect():
     return client
 
 def mqtt_check(client):
-
     client.loop_start()
     client.on_message = on_message
     client.loop_stop()
@@ -84,7 +83,6 @@ def main():
     client = mqtt_connect()
     global result
     while True:
-        time.sleep(1)
         
         mqtt_check(client)
         
