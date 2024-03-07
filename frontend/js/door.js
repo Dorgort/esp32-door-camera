@@ -30,9 +30,8 @@ window.addEventListener("load", (event) => {
         let payload = decoder.decode(message);
         console.log(payload);
         //console.log(payload== "Max Mustermann");
-        if (payload == "Max Mustermann") {
+        if (payload == "offen") {
             icon.setAttribute('class', 'fa-solid fa-door-open');
-            
             // Interval 1000ms Funktionsaufruf
             let interval = setInterval(reduce_remaining_door_open_time, 1000);
             //Ruft doorclose auf wenn 2. Variable (timeout) abläuft
@@ -41,7 +40,7 @@ window.addEventListener("load", (event) => {
         }
         else {
             icon.setAttribute('class', 'fa-solid fa-door-closed');
-            msg.textContent = "Tür verschlossen."
+            msg.textContent = "Tür bleibt verschlossen."
         }
     });
 });
@@ -49,7 +48,7 @@ window.addEventListener("load", (event) => {
 function door_close(client, interval){
     console.log("Türe zu!")
     msg.textContent = "Tür verschlossen.";
-    client.publish('face', 'false');
+    client.publish('door', 'verschlossen');
     clearInterval(interval);
 }
 

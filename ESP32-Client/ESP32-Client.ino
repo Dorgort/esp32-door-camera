@@ -21,7 +21,7 @@ void setup() {
   WiFi.begin(ssid, password);
   mqtt.begin(client);
 
-  mqtt.setWill("connection/camera", "{'Camera':'disconnected'}");
+  mqtt.setWill("connection/camera", "Kamera ist nicht mehr verbunden");
   connect();
 }
 
@@ -72,5 +72,5 @@ connect_to_host:
         }
     }
     Serial.println(" connected!");
-    mqtt.publish("connection/camera", "{'Camera':'connected'}");
+    mqtt.publish("connection/camera", "Kamera ist verbunden");
 }

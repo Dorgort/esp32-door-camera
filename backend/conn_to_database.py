@@ -12,7 +12,6 @@ db_params = {
     'user': getenv("DB_USER"),
     'password': getenv("DB_PASSWORD")
 }
-sql_insert_image = """INSERT INTO images (image_data) VALUES(%s) RETURNING id;"""
 sql_insert_log = """INSERT INTO logs (text) VALUES(%s) RETURNING id;"""
 result = ""
 
@@ -25,14 +24,15 @@ def mqtt_connect():
     print("creating new instance")
     client = mqtt.Client(client_id="db_saver", transport="websockets", callback_api_version=mqtt.CallbackAPIVersion.VERSION2) #create new instance
     client.username_pw_set(mqtt_user, mqtt_password)
-    client.will_set(topic="connection/db", payload='{"DB":"disconnected"}')
+    client.will_set(topic="connection/db", payload='DB ist nicht mehr verbunden')
     print("connecting to broker")
+    client.tls_set()
     client.connect(host=broker_address, port=broker_port,) #connect to broker
-    client.publish(topic="connection/db", payload='{"DB":"connected"}')
+    client.publish(topic="connection/db", payload='DB ist verbunden')
     print("connected")
     client.subscribe("db/image")
     client.subscribe("face")
-    client.subscribe("connection/#")
+    client.subscribe("door")
     
     
     return client
@@ -50,20 +50,23 @@ def on_message(client, userdata, message):
     result = message.topic, str(message.payload.decode("utf-8"))
     #print (result[0])
 
-def database_send(message):
+def database_send(message, client):
+    conn = None
     try:
         conn = psycopg2.connect(**db_params)
 
         # Open a cursor to perform database operations
         cur = conn.cursor()
-
-        if message[0] == "face":
-            text = message[1]+ " war an deiner Haustür."
-            print(text)
-            cur.execute(sql_insert_log, (text, ))
+        topic = message[0]
+        content = message[1]
+        if topic == "face":
+            cur.execute(sql_insert_log, (content+" war an deiner Haustür.", ))
             print(cur.fetchone()[0])
-        elif message[0]== "db/image":
-            cur.execute(sql_insert_image, (message[1],))
+        elif topic == "db/image":
+            cur.execute(sql_insert_log, (content,))
+            print(cur.fetchone()[0])
+        elif topic == "door":
+            cur.execute(sql_insert_log, ("Tür ist jetzt "+content,))
             print(cur.fetchone()[0])
 
         # Make the changes to the database persistent
@@ -71,6 +74,7 @@ def database_send(message):
         cur.close()
 
     except (Exception, psycopg2.DatabaseError) as error:
+        client.publish("connection/db", "DB nicht erreichbar.")
         print(error)
     finally:
         if conn is not None:
@@ -86,7 +90,7 @@ def main():
         
         #print(time.time(), "Connected to MQTT")
         if result != "":
-            database_send(result)
+            database_send(result, client)
             result = ""
 
 

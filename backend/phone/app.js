@@ -52,8 +52,7 @@ const updateMessageSender = (name) => {
 userSelectorBtn.onclick = () => updateMessageSender('User')
 botSelectorBtn.onclick = () => updateMessageSender('Bot')
 
-const sendMessage = (e) => {
-  //e.preventDefault()
+const sendMessage = () => {
 
   const timestamp = new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
   const message = {
@@ -68,6 +67,11 @@ const sendMessage = (e) => {
 
   /* Add message to DOM */
   chatMessages.innerHTML += createChatMessageElement(message)
+
+  if (chatInput.value == "öffnen"){
+    console.log("HÄH");
+    doorOpen();
+  }
 
   /* Clear input field */
   chatInputForm.reset()
@@ -95,7 +99,9 @@ window.addEventListener("load", (event) => {
       username: config.MQTT_USER,
       password: config.MQTT_PASSWORD,
   };
-  const client = mqtt.connect("wss://" + broker, options);
+  console.log(client)
+  client = mqtt.connect("wss://" + broker, options);
+  console.log(client)
 
   client.on("connect", function () {
       chat_header.textContent = "OwlDoor (Connected)."
@@ -132,3 +138,12 @@ window.addEventListener("load", (event) => {
       }
   });
 });
+
+function doorOpen(){
+  console.log(client)
+  client.publish('door', 'offen');
+  updateMessageSender('Bot')
+  chatInput.value = `Tür wird versucht zu öffnen!`
+  sendMessage(null);
+  updateMessageSender('User')
+}

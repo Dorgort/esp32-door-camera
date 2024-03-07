@@ -1,4 +1,4 @@
-const topic = config.MQTT_TOPIC;
+const cameraStream = config.MQTT_TOPIC;
 const broker = config.MQTT_IP;
 let client;
 let payload;
@@ -16,19 +16,15 @@ window.addEventListener("load", (event) => {
   client = mqtt.connect("wss://" + broker, options);
   client.on("connect", function () {
     msg.textContent = "Connected; Waiting for images...";
-    client.subscribe(topic);
+    client.subscribe(cameraStream);
   });
 
   client.on("message", (topic, message) => {
-    //var topic = topic;
     payload = message;
 
     if (payload != undefined && payload.length > 0) {
       $("img").attr("src", payload);
     }
-    //const blob = new Blob([message], { type: "data:image/jpeg;base64" });
-    //img.src = URL.createObjectURL(blob);
-    //console.log(blob);
     frameCounter++;
     msg.textContent = `Frames: ${frameCounter}`;
   });
@@ -38,12 +34,7 @@ window.addEventListener("load", (event) => {
 
 function send_to_database() {
   if (payload != undefined && payload.length > 0) {
-    //console.log(client.connected);
-    //console.log(client)
     let img = payload;
-    // message = new Paho.MQTT.Message("Hello");
-    // message.destinationName = "World";
-    // client.send(message);
     client.publish
       ('db/image', img);
   }
@@ -61,13 +52,13 @@ function detect_face(face) {
     console.log(face=="max_mustermann")
     if (face == "max_mustermann") {
       client.publish('face', "Max Mustermann");
-      let img = payload;
-      client.publish('phone/image', img);
+      send_to_database();
+      send_to_phone();
     }
     else {
       client.publish('face', "unbekannte Person");
-      let img = payload;
-      client.publish('phone/image', img);
+      send_to_database();
+      send_to_phone();
     }
   }
 }
