@@ -95,7 +95,7 @@ window.addEventListener("load", (event) => {
       username: config.MQTT_USER,
       password: config.MQTT_PASSWORD,
   };
-  const client = mqtt.connect("ws://" + broker, options);
+  const client = mqtt.connect("wss://" + broker, options);
 
   client.on("connect", function () {
       chat_header.textContent = "OwlDoor (Connected)."

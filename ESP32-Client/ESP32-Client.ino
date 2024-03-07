@@ -53,7 +53,7 @@ connect_to_wifi:
 connect_to_host:
     Serial.println("connecting to host...");
     client.disconnect();
-    client.begin(mqtt_server, mqtt_port, "/", "mqtt");  // "mqtt" is required
+    client.beginSSL(mqtt_server, mqtt_port, "/", "", "mqtt");  // "mqtt" is required
     client.setReconnectInterval(2000);
 
     Serial.print("connecting to mqtt broker...");

@@ -10,6 +10,7 @@ mqtt_password=getenv("MQTT_PASSWORD")
 client = mqtt.Client(client_id="test_publisher", transport="websockets", callback_api_version=mqtt.CallbackAPIVersion.VERSION2) #create new instance
 client.username_pw_set(mqtt_user, mqtt_password)
 print("connecting to broker")
+client.tls_set()
 client.connect(host=broker_address, port=broker_port,) #connect to broker
 print("Trying to send message")
 message = "Hello World!"

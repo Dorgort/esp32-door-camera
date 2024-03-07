@@ -13,7 +13,7 @@ window.addEventListener("load", (event) => {
     username: config.MQTT_USER,
     password: config.MQTT_PASSWORD,
   };
-  client = mqtt.connect("ws://" + broker, options);
+  client = mqtt.connect("wss://" + broker, options);
   client.on("connect", function () {
     msg.textContent = "Connected; Waiting for images...";
     client.subscribe(topic);
