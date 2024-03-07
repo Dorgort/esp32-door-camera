@@ -56,7 +56,7 @@ void initCamera() {
   //
   // if PSRAM IC present, init with UXGA resolution and higher JPEG quality
   //                      for larger pre-allocated frame buffer.
-  if (psramFound()) { //是否有PSRAM(Psuedo SRAM)記憶體IC
+  if (psramFound()) { //Availability of PSRAM (Psuedo SRAM) memory ICs
     config.frame_size = FRAMESIZE_UXGA;
     config.jpeg_quality = 10;
     config.fb_count = 2;
@@ -66,14 +66,14 @@ void initCamera() {
     config.fb_count = 1;
   }
 
-  //視訊初始化
+  //Video Initialization
   esp_err_t err = esp_camera_init(&config);
   if (err != ESP_OK) {
     Serial.printf("Camera init failed with error 0x%x", err);
     ESP.restart();
   }
 
-  //可自訂視訊框架預設大小(解析度大小)
+  //Customizable video frame preset size (resolution size)
   sensor_t * s = esp_camera_sensor_get();
   // initial sensors are flipped vertically and colors are a bit saturated
   if (s->id.PID == OV3660_PID) {
@@ -82,12 +82,12 @@ void initCamera() {
     s->set_saturation(s, -2); // lower the saturation
   }
   // drop down frame size for higher initial frame rate
-  s->set_framesize(s, FRAMESIZE_QVGA);    //解析度 SVGA(800x600), VGA(640x480), CIF(400x296), QVGA(320x240), HQVGA(240x176), QQVGA(160x120), QXGA(2048x1564 for OV3660)
+  s->set_framesize(s, FRAMESIZE_QVGA);    //resolution (of image, monitor etc) SVGA(800x600), VGA(640x480), CIF(400x296), QVGA(320x240), HQVGA(240x176), QQVGA(160x120), QXGA(2048x1564 for OV3660)
 
-  //s->set_vflip(s, 1);  //垂直翻轉
-  //s->set_hmirror(s, 1);  //水平鏡像
+  //s->set_vflip(s, 1); //vertical flip
+  //s->set_hmirror(s, 1); //Horizontal Mirror
 
-  //閃光燈(GPIO4)
+  //Flash(GPIO4)
   ledcAttachPin(4, 4);
   ledcSetup(4, 5000, 8);
 }
