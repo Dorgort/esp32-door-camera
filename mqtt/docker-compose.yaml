@@ -1,17 +1,14 @@
 version: "3.7"
 services:
-  # mqtt5 eclipse-mosquitto
   mqtt5:
     image: eclipse-mosquitto
     container_name: mqtt5
-    network_mode: host
     ports:
-      - "53165:53165"
+      - "8883:8883"
     volumes:
       - ./config:/mosquitto/config:rw
       - ./log:/mosquitto/log:rw
 
-# volumes for mapping data,config and log
 volumes:
   config:
   log:
